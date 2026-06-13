@@ -1,0 +1,16 @@
+---
+description: Frontend conventions — React, TanStack Router/Query, Zustand, shadcn/ui
+globs: frontend/**
+alwaysApply: false
+---
+
+# Frontend
+
+- Routes: `frontend/src/routes/` — `_public/` guest, `_authenticated/` auth later
+- Hooks: `frontend/src/hooks/` — all API via TanStack Query
+- No fetch/axios in components
+- Zustand: cart drawer UI only; server data in Query
+- shadcn + Tailwind; Amazon tokens in `index.css` / `tailwind.config.ts`
+- Search typeahead: `useSearchSuggestions` (debounced, not Query)
+
+New feature: types → hook → component → route

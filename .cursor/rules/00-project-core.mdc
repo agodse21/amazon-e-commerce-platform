@@ -1,0 +1,34 @@
+---
+description: Core monorepo standards — always follow for any change in this project
+alwaysApply: true
+---
+
+# Amazon Clone — Core
+
+pnpm monorepo: `frontend/`, `backend/` (+ `backend/prisma/`), Vercel `api/index.ts`.
+
+Read `docs/CONVENTIONS.md` and `docs/ARCHITECTURE.md` when unsure.
+
+## Rules
+
+- Frontend ↔ backend only via `/api/*` — never cross-import
+- Backend: routes → controllers → services → Prisma
+- Frontend: hooks for API, components for UI
+- API shape: `{ success, data?, message? }` via `utils/response.ts`
+- Session cart: cookies + `withCredentials: true` on axios
+- Update `docs/API.md` when adding endpoints
+- Keep diffs small
+
+## Commands
+
+```bash
+pnpm run dev
+pnpm run prisma:migrate
+pnpm run prisma:seed
+pnpm run type-check
+```
+
+## Skills (`.cursor/skills/`)
+
+- **code-review** — when reviewing changes
+- **prisma-and-seed** — schema, migrate, seed
