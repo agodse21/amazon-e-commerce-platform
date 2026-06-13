@@ -1,0 +1,153 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    /* Amazon orange as primary */
+    --primary: 37 100% 50%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 37 100% 50%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 37 100% 50%;
+    --radius: 0.3rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 37 100% 50%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 37 100% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    background-color: #eaeded;
+  }
+
+  a {
+    @apply text-amazon-link-blue no-underline hover:underline hover:text-amazon-orange;
+  }
+}
+
+@layer components {
+  /* Amazon-style primary action button (yellow "Add to Cart") */
+  .btn-amazon-primary {
+    @apply bg-amazon-buy-yellow hover:bg-amazon-buy-yellow-hover text-black text-sm font-normal border border-[#FCD200] rounded-full px-4 py-1.5 cursor-pointer transition-colors shadow-sm;
+  }
+
+  /* Amazon-style secondary button */
+  .btn-amazon-secondary {
+    @apply bg-gradient-to-b from-[#f7f8fa] to-[#e7e9ec] hover:from-[#e7eaf0] hover:to-[#d9dce3] text-sm border border-[#adb1b8] rounded-full px-4 py-1.5 cursor-pointer transition-colors;
+  }
+
+  /* Full-width cart button */
+  .btn-amazon-cart {
+    @apply bg-amazon-buy-yellow hover:bg-amazon-buy-yellow-hover text-black text-sm font-normal border border-[#FCD200] rounded-full px-6 py-2 cursor-pointer transition-colors w-full shadow-sm;
+  }
+
+  /* Amazon "Buy Now" button (orange) */
+  .btn-amazon-buy {
+    @apply bg-amazon-orange hover:bg-amazon-orange-dark text-black text-sm font-normal rounded-full px-6 py-2 cursor-pointer transition-colors w-full shadow-sm;
+  }
+
+  /* Product card container */
+  .product-card {
+    @apply bg-white p-4 hover:shadow-md transition-all duration-200 border border-transparent hover:border-gray-200 cursor-pointer rounded;
+  }
+
+  /* Price display - Amazon red */
+  .price-display {
+    @apply text-[#B12704] text-xl font-medium;
+  }
+
+  /* Crossed-out original price */
+  .original-price {
+    @apply text-gray-500 line-through text-sm;
+  }
+
+  /* Discount percentage */
+  .discount-badge {
+    @apply text-[#CC0C39] text-sm font-medium;
+  }
+
+  /* Star rating */
+  .star-rating {
+    @apply text-[#FF9900] flex items-center gap-0.5;
+  }
+
+  /* Section title */
+  .section-title {
+    @apply text-xl font-bold text-gray-900 mb-4;
+  }
+
+  /* Amazon info panel / box */
+  .amazon-panel {
+    @apply bg-white border border-gray-200 rounded p-4;
+  }
+
+  /* Navbar link hover */
+  .navbar-link {
+    @apply text-white text-sm hover:ring-1 hover:ring-white rounded px-1.5 py-1 transition-all cursor-pointer;
+  }
+
+  /* Category filter chip */
+  .category-chip {
+    @apply text-sm px-3 py-1 rounded-full border border-gray-300 bg-white hover:border-amazon-orange hover:text-amazon-orange cursor-pointer transition-all whitespace-nowrap;
+  }
+
+  .category-chip-active {
+    @apply text-sm px-3 py-1 rounded-full border border-amazon-orange bg-amazon-orange text-white cursor-pointer whitespace-nowrap;
+  }
+
+  /* Page content wrapper */
+  .page-container {
+    @apply max-w-[1500px] mx-auto px-4 py-4;
+  }
+
+  /* Stock badge */
+  .stock-in {
+    @apply text-amazon-cart-green font-medium;
+  }
+
+  .stock-out {
+    @apply text-red-600 font-medium;
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "amazon-e-commerce-platform",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@9.15.9",
+  "scripts": {
+    "dev": "concurrently -n frontend,backend -c cyan,yellow \"pnpm --filter @amazon-clone/frontend dev\" \"pnpm --filter @amazon-clone/backend dev\"",
+    "dev:frontend": "pnpm --filter @amazon-clone/frontend dev",
+    "dev:backend": "pnpm --filter @amazon-clone/backend dev",
+    "build": "pnpm --filter @amazon-clone/frontend build",
+    "preview": "pnpm --filter @amazon-clone/frontend preview",
+    "type-check": "pnpm -r --if-present type-check",
+    "lint": "pnpm -r --if-present lint",
+    "format": "pnpm -r --if-present format",
+    "prisma:generate": "pnpm --filter @amazon-clone/backend prisma:generate",
+    "prisma:migrate": "pnpm --filter @amazon-clone/backend prisma:migrate",
+    "prisma:migrate:prod": "pnpm --filter @amazon-clone/backend prisma:migrate:prod",
+    "prisma:seed": "pnpm --filter @amazon-clone/backend prisma:seed",
+    "prisma:studio": "pnpm --filter @amazon-clone/backend prisma:studio",
+    "prisma:reset": "pnpm --filter @amazon-clone/backend prisma:reset"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "typescript": "^5.4.2"
+  }
+}
