@@ -7,7 +7,7 @@
     "dev": "concurrently -n frontend,backend -c cyan,yellow \"pnpm --filter @amazon-clone/frontend dev\" \"pnpm --filter @amazon-clone/backend dev\"",
     "dev:frontend": "pnpm --filter @amazon-clone/frontend dev",
     "dev:backend": "pnpm --filter @amazon-clone/backend dev",
-    "build": "pnpm --filter @amazon-clone/frontend build",
+    "build": "pnpm run prisma:generate && pnpm --filter @amazon-clone/frontend build",
     "preview": "pnpm --filter @amazon-clone/frontend preview",
     "type-check": "pnpm -r --if-present type-check",
     "lint": "pnpm -r --if-present lint",

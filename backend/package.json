@@ -10,7 +10,6 @@
     "lint": "eslint src --ext .ts --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint src --ext .ts --fix",
     "format": "prettier --write \"src/**/*.ts\"",
-    "postinstall": "prisma generate",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "dotenv -e ../.env -- prisma migrate dev",
     "prisma:migrate:prod": "prisma migrate deploy",
@@ -22,7 +21,7 @@
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
-    "@prisma/client": "^5.10.2",
+    "@prisma/client": "5.22.0",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -50,7 +49,7 @@
     "eslint-plugin-unused-imports": "^4.4.1",
     "dotenv-cli": "^8.0.0",
     "prettier": "^3.8.4",
-    "prisma": "^5.10.2",
+    "prisma": "5.22.0",
     "supertest": "^6.3.4",
     "tsx": "^4.7.1",
     "typescript": "^5.4.2",
