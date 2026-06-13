@@ -11,6 +11,7 @@ import productRoutes from './routes/products.js';
 import categoryRoutes from './routes/categories.js';
 import cartRoutes from './routes/cart.js';
 import orderRoutes from './routes/orders.js';
+import wishlistRoutes from './routes/wishlist.js';
 
 export function createApp() {
   const app = express();
@@ -58,6 +59,7 @@ export function createApp() {
   app.use('/api/categories', categoryRoutes);
   app.use('/api/cart', cartRoutes);
   app.use('/api/orders', orderRoutes);
+  app.use('/api/wishlist', wishlistRoutes);
 
   // 404 + Error Handlers
   app.use('/api/*', notFoundHandler);

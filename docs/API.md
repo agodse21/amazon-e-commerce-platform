@@ -37,6 +37,17 @@ All routes use session cookie.
 | DELETE | `/cart/items/:itemId` | — |
 | DELETE | `/cart` | clear |
 
+## Wishlist
+
+Session cookie required (same as cart).
+
+| Method | Path | Body |
+|--------|------|------|
+| GET | `/wishlist` | — |
+| POST | `/wishlist/items` | `{ productId }` |
+| DELETE | `/wishlist/items/:itemId` | — |
+| DELETE | `/wishlist/products/:productId` | — |
+
 ## Orders
 
 | Method | Path | Body |

@@ -205,18 +205,20 @@ model OrderItem {
 }
 
 // ─────────────────────────────────────────────────────────
-// Wishlists (bonus feature)
+// Wishlists (session-based; userId reserved for future auth)
 // ─────────────────────────────────────────────────────────
 model Wishlist {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now()) @map("created_at")
 
-  userId String @map("user_id")
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  productId String  @map("product_id")
+  sessionId String @map("session_id")
+  productId String @map("product_id")
   product   Product @relation(fields: [productId], references: [id])
 
-  @@unique([userId, productId])
+  userId String? @map("user_id")
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, productId])
+  @@index([sessionId])
   @@map("wishlists")
 }
