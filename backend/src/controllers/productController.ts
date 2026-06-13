@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import * as productService from '../services/productService';
-import { sendSuccess, sendNotFound } from '../utils/response';
+import * as productService from '../services/productService.js';
+import { sendSuccess, sendNotFound } from '../utils/response.js';
 
 export const listProducts = async (
   req: Request,

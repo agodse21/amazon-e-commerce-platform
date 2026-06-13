@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import * as cartService from '../services/cartService';
-import { sendSuccess } from '../utils/response';
+import * as cartService from '../services/cartService.js';
+import { sendSuccess } from '../utils/response.js';
 
 export const getCart = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {

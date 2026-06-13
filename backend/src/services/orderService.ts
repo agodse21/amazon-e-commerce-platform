@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
-import { prisma } from '../utils/prisma';
-import { createError } from '../middleware/errorHandler';
+import { prisma } from '../utils/prisma.js';
+import { createError } from '../middleware/errorHandler.js';
 
 export interface ShippingAddress {
   fullName: string;

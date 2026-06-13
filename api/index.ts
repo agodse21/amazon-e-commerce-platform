@@ -8,4 +8,4 @@
  * Vercel's Node.js runtime accepts an Express app as a default export
  * and uses its (req, res) signature as the serverless handler.
  */
-export { default } from '../backend/src/app';
+export { default } from '../backend/src/app.js';

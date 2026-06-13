@@ -5,8 +5,8 @@ import {
   updateCartItem,
   removeCartItem,
   clearCart,
-} from '../controllers/cartController';
-import { validateBody } from '../middleware/validateRequest';
+} from '../controllers/cartController.js';
+import { validateBody } from '../middleware/validateRequest.js';
 import { z } from 'zod';
 
 const router = Router();

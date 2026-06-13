@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import * as orderService from '../services/orderService';
-import { sendSuccess, sendCreated } from '../utils/response';
-import { ShippingAddress } from '../services/orderService';
+import * as orderService from '../services/orderService.js';
+import { sendSuccess, sendCreated } from '../utils/response.js';
+import { ShippingAddress } from '../services/orderService.js';
 
 export const createOrder = async (
   req: Request,

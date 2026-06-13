@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { createOrder, getOrder, listOrders } from '../controllers/orderController';
-import { validateBody } from '../middleware/validateRequest';
+import { createOrder, getOrder, listOrders } from '../controllers/orderController.js';
+import { validateBody } from '../middleware/validateRequest.js';
 import { z } from 'zod';
-import { orderLimiter } from '../middleware/rateLimiter';
+import { orderLimiter } from '../middleware/rateLimiter.js';
 
 const router = Router();
 

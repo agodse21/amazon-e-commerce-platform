@@ -1,4 +1,4 @@
-import { prisma } from '../utils/prisma';
+import { prisma } from '../utils/prisma.js';
 import { Prisma } from '@prisma/client';
 
 export interface ProductFilters {

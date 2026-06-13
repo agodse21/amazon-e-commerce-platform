@@ -3,14 +3,14 @@ import './types/express.js';
 import express from 'express';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
-import { corsMiddleware } from './middleware/corsMiddleware';
-import { sessionMiddleware } from './middleware/sessionMiddleware';
-import { apiLimiter } from './middleware/rateLimiter';
-import { errorHandler, notFoundHandler } from './middleware/errorHandler';
-import productRoutes from './routes/products';
-import categoryRoutes from './routes/categories';
-import cartRoutes from './routes/cart';
-import orderRoutes from './routes/orders';
+import { corsMiddleware } from './middleware/corsMiddleware.js';
+import { sessionMiddleware } from './middleware/sessionMiddleware.js';
+import { apiLimiter } from './middleware/rateLimiter.js';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
+import productRoutes from './routes/products.js';
+import categoryRoutes from './routes/categories.js';
+import cartRoutes from './routes/cart.js';
+import orderRoutes from './routes/orders.js';
 
 const app = express();
 
