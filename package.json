@@ -9,7 +9,7 @@
     "dev:backend": "pnpm --filter @amazon-clone/backend dev",
     "build": "pnpm run prisma:generate && pnpm --filter @amazon-clone/frontend build",
     "preview": "pnpm --filter @amazon-clone/frontend preview",
-    "type-check": "pnpm -r --if-present type-check",
+    "type-check": "pnpm run prisma:generate && pnpm -r --if-present type-check",
     "lint": "pnpm -r --if-present lint",
     "format": "pnpm -r --if-present format",
     "prisma:generate": "pnpm --filter @amazon-clone/backend prisma:generate",

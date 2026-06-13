@@ -6,13 +6,13 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "start": "node dist/server.js",
-    "type-check": "tsc --noEmit",
+    "type-check": "prisma generate && tsc --noEmit",
     "lint": "eslint src --ext .ts --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint src --ext .ts --fix",
     "format": "prettier --write \"src/**/*.ts\"",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "dotenv -e ../.env -- prisma migrate dev",
-    "prisma:migrate:prod": "prisma migrate deploy",
+    "prisma:migrate:prod": "dotenv -e ../.env -- prisma migrate deploy",
     "prisma:seed": "dotenv -e ../.env -- tsx prisma/seed.ts",
     "prisma:studio": "dotenv -e ../.env -- prisma studio",
     "prisma:reset": "dotenv -e ../.env -- prisma migrate reset --force"
@@ -21,8 +21,9 @@
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^0.10.0",
+    "@prisma/adapter-neon": "5.22.0",
     "@prisma/client": "5.22.0",
-    "prisma": "5.22.0",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -31,7 +32,9 @@
     "express-rate-limit": "^7.2.0",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
+    "prisma": "5.22.0",
     "uuid": "^9.0.1",
+    "ws": "^8.18.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -43,12 +46,13 @@
     "@types/node": "^20.11.25",
     "@types/supertest": "^6.0.2",
     "@types/uuid": "^9.0.8",
+    "@types/ws": "^8.5.13",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
+    "dotenv-cli": "^8.0.0",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.2",
     "eslint-plugin-unused-imports": "^4.4.1",
-    "dotenv-cli": "^8.0.0",
     "prettier": "^3.8.4",
     "supertest": "^6.3.4",
     "tsx": "^4.7.1",

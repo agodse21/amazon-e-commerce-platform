@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { prisma } from '../utils/prisma';
 import { createError } from '../middleware/errorHandler';
 
@@ -14,7 +15,14 @@ const CART_INCLUDE = {
       },
     },
   },
-};
+} satisfies Prisma.CartInclude;
+
+type CartWithItems = Prisma.CartGetPayload<{ include: typeof CART_INCLUDE }>;
+type CartItemRow = CartWithItems['items'][number];
+
+const CART_ITEMS_ONLY = { items: true } satisfies Prisma.CartInclude;
+type CartWithItemRows = Prisma.CartGetPayload<{ include: typeof CART_ITEMS_ONLY }>;
+type CartItemOnly = CartWithItemRows['items'][number];
 
 const getOrCreateCart = async (sessionId: string) => {
   let cart = await prisma.cart.findUnique({
@@ -51,7 +59,7 @@ export const addToCart = async (
 
   const cart = await getOrCreateCart(sessionId);
 
-  const existingItem = cart.items.find((i) => i.productId === productId);
+  const existingItem = cart.items.find((i: CartItemRow) => i.productId === productId);
 
   if (existingItem) {
     const newQty = existingItem.quantity + quantity;
@@ -83,11 +91,11 @@ export const updateCartItem = async (
 ) => {
   const cart = await prisma.cart.findUnique({
     where: { sessionId },
-    include: { items: true },
+    include: CART_ITEMS_ONLY,
   });
   if (!cart) throw createError('Cart not found', 404);
 
-  const item = cart.items.find((i) => i.id === itemId);
+  const item = cart.items.find((i: CartItemOnly) => i.id === itemId);
   if (!item) throw createError('Cart item not found', 404);
 
   const product = await prisma.product.findUnique({ where: { id: item.productId } });
@@ -105,11 +113,11 @@ export const updateCartItem = async (
 export const removeCartItem = async (sessionId: string, itemId: string) => {
   const cart = await prisma.cart.findUnique({
     where: { sessionId },
-    include: { items: true },
+    include: CART_ITEMS_ONLY,
   });
   if (!cart) throw createError('Cart not found', 404);
 
-  const item = cart.items.find((i) => i.id === itemId);
+  const item = cart.items.find((i: CartItemOnly) => i.id === itemId);
   if (!item) throw createError('Cart item not found', 404);
 
   await prisma.cartItem.delete({ where: { id: itemId } });

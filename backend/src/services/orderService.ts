@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { prisma } from '../utils/prisma';
 import { createError } from '../middleware/errorHandler';
 
@@ -38,6 +39,8 @@ type OrderItemWithProduct = {
   };
 };
 
+type CartLineItem = Prisma.CartItemGetPayload<{ include: { product: true } }>;
+
 const resolveOrderItems = async (
   sessionId: string,
   buyNowItems?: OrderLineItem[]
@@ -75,7 +78,7 @@ const resolveOrderItems = async (
 
   return {
     cartId: cart.id,
-    items: cart.items.map((item) => ({
+    items: cart.items.map((item: CartLineItem) => ({
       productId: item.productId,
       quantity: item.quantity,
       product: item.product,
@@ -90,7 +93,7 @@ export const createOrder = async (
 ) => {
   const { items, cartId } = await resolveOrderItems(sessionId, buyNowItems);
 
-  const order = await prisma.$transaction(async (tx) => {
+  const order = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
     for (const item of items) {
       const product = await tx.product.findUnique({
         where: { id: item.productId },
