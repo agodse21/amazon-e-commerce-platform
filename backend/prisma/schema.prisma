@@ -1,0 +1,220 @@
+// Prisma Schema — Amazon Clone
+// Docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  // For Neon in production, add directUrl for migrations:
+  // directUrl = env("DIRECT_URL")
+}
+
+// ─────────────────────────────────────────────────────────
+// Users (for bonus auth feature)
+// ─────────────────────────────────────────────────────────
+model User {
+  id           String     @id @default(uuid())
+  email        String     @unique
+  passwordHash String     @map("password_hash")
+  name         String
+  createdAt    DateTime   @default(now()) @map("created_at")
+
+  carts     Cart[]
+  orders    Order[]
+  wishlists Wishlist[]
+
+  @@map("users")
+}
+
+// ─────────────────────────────────────────────────────────
+// Categories (supports one level of nesting via parent_id)
+// ─────────────────────────────────────────────────────────
+model Category {
+  id       Int     @id @default(autoincrement())
+  name     String  @unique
+  slug     String  @unique
+  imageUrl String? @map("image_url")
+
+  parentId Int?      @map("parent_id")
+  parent   Category? @relation("CategoryChildren", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryChildren")
+
+  products Product[]
+
+  @@map("categories")
+}
+
+// ─────────────────────────────────────────────────────────
+// Products
+// ─────────────────────────────────────────────────────────
+model Product {
+  id            String   @id @default(uuid())
+  name          String
+  slug          String   @unique
+  description   String?  @db.Text
+  price         Decimal  @db.Decimal(10, 2)
+  originalPrice Decimal? @map("original_price") @db.Decimal(10, 2)
+  stock         Int      @default(0)
+  ratingAvg     Decimal  @default(0) @map("rating_avg") @db.Decimal(3, 1)
+  ratingCount   Int      @default(0) @map("rating_count")
+  isActive      Boolean  @default(true) @map("is_active")
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  categoryId Int      @map("category_id")
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  images         ProductImage[]
+  specifications ProductSpecification[]
+  cartItems      CartItem[]
+  orderItems     OrderItem[]
+  wishlists      Wishlist[]
+
+  @@index([categoryId])
+  @@index([slug])
+  @@index([name])
+  @@map("products")
+}
+
+// ─────────────────────────────────────────────────────────
+// Product Images (multiple per product)
+// ─────────────────────────────────────────────────────────
+model ProductImage {
+  id           Int    @id @default(autoincrement())
+  url          String
+  isPrimary    Boolean @default(false) @map("is_primary")
+  displayOrder Int     @default(0) @map("display_order")
+
+  productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_images")
+}
+
+// ─────────────────────────────────────────────────────────
+// Product Specifications (key-value pairs)
+// ─────────────────────────────────────────────────────────
+model ProductSpecification {
+  id    Int    @id @default(autoincrement())
+  key   String
+  value String @db.Text
+
+  productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_specifications")
+}
+
+// ─────────────────────────────────────────────────────────
+// Carts (one per session or per user)
+// ─────────────────────────────────────────────────────────
+model Cart {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Guest cart: identified by session cookie
+  sessionId String? @unique @map("session_id")
+
+  // Authenticated cart: identified by user
+  userId String? @unique @map("user_id")
+  user   User?   @relation(fields: [userId], references: [id])
+
+  items CartItem[]
+
+  @@map("carts")
+}
+
+// ─────────────────────────────────────────────────────────
+// Cart Items
+// ─────────────────────────────────────────────────────────
+model CartItem {
+  id       String @id @default(uuid())
+  quantity Int
+
+  cartId String @map("cart_id")
+  cart   Cart   @relation(fields: [cartId], references: [id], onDelete: Cascade)
+
+  productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@unique([cartId, productId])
+  @@index([cartId])
+  @@map("cart_items")
+}
+
+// ─────────────────────────────────────────────────────────
+// Orders
+// ─────────────────────────────────────────────────────────
+enum OrderStatus {
+  pending
+  confirmed
+  shipped
+  delivered
+  cancelled
+}
+
+model Order {
+  id          String      @id @default(uuid())
+  orderNumber String      @unique @map("order_number")
+  status      OrderStatus @default(confirmed)
+  subtotal    Decimal     @db.Decimal(10, 2)
+  tax         Decimal     @db.Decimal(10, 2)
+  shippingCost Decimal    @default(0) @map("shipping_cost") @db.Decimal(10, 2)
+  total       Decimal     @db.Decimal(10, 2)
+
+  // Shipping address stored as JSON snapshot at time of order
+  shippingAddress Json @map("shipping_address")
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Can be placed by guest (sessionId) or authenticated user
+  sessionId String? @map("session_id")
+  userId    String? @map("user_id")
+  user      User?   @relation(fields: [userId], references: [id])
+
+  items OrderItem[]
+
+  @@index([sessionId])
+  @@index([userId])
+  @@map("orders")
+}
+
+// ─────────────────────────────────────────────────────────
+// Order Items (snapshot of product data at time of order)
+// ─────────────────────────────────────────────────────────
+model OrderItem {
+  id           String  @id @default(uuid())
+  productName  String  @map("product_name")
+  productImage String? @map("product_image")
+  quantity     Int
+  unitPrice    Decimal @map("unit_price") @db.Decimal(10, 2)
+
+  orderId String @map("order_id")
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+  @@map("order_items")
+}
+
+// ─────────────────────────────────────────────────────────
+// Wishlists (bonus feature)
+// ─────────────────────────────────────────────────────────
+model Wishlist {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@unique([userId, productId])
+  @@map("wishlists")
+}

@@ -1,0 +1,15 @@
+---
+description: Prisma schema, migrations, and seed
+globs: backend/prisma/**
+alwaysApply: false
+---
+
+# Database
+
+- Schema: `backend/prisma/schema.prisma`
+- Seed: DummyJSON → `cdn.dummyjson.com` images, no hand-made URLs
+- Commands: `pnpm run prisma:migrate`, `pnpm run prisma:seed`
+- Root `.env` for `DATABASE_URL`
+- Cursor pagination: `take: limit + 1`, return `nextCursor` + `hasNextPage`
+
+Prisma only in services. Update `docs/API.md` / types if models change.
