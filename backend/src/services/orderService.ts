@@ -41,6 +41,43 @@ type OrderItemWithProduct = {
 
 type CartLineItem = Prisma.CartItemGetPayload<{ include: { product: true } }>;
 
+const ORDER_INCLUDE = {
+  items: {
+    include: {
+      product: {
+        include: {
+          images: { where: { isPrimary: true }, take: 1 },
+        },
+      },
+    },
+  },
+} satisfies Prisma.OrderInclude;
+
+const assertItemsAvailable = (items: OrderItemWithProduct[]) => {
+  for (const item of items) {
+    if (!item.product.isActive) {
+      throw createError(`Product "${item.product.name}" is no longer available`, 400);
+    }
+    if (item.product.stock < item.quantity) {
+      throw createError(
+        `Insufficient stock for "${item.product.name}". Available: ${item.product.stock}`,
+        400
+      );
+    }
+  }
+};
+
+const calcOrderTotals = (items: OrderItemWithProduct[]) => {
+  const subtotal = items.reduce(
+    (sum, item) => sum + Number(item.product.price) * item.quantity,
+    0
+  );
+  const tax = Math.round(subtotal * TAX_RATE * 100) / 100;
+  const shippingCost = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : 49;
+  const total = Math.round((subtotal + tax + shippingCost) * 100) / 100;
+  return { subtotal, tax, shippingCost, total };
+};
+
 const resolveOrderItems = async (
   sessionId: string,
   buyNowItems?: OrderLineItem[]
@@ -92,77 +129,64 @@ export const createOrder = async (
   buyNowItems?: OrderLineItem[]
 ) => {
   const { items, cartId } = await resolveOrderItems(sessionId, buyNowItems);
+  assertItemsAvailable(items);
+  const { subtotal, tax, shippingCost, total } = calcOrderTotals(items);
 
-  const order = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
-    for (const item of items) {
-      const product = await tx.product.findUnique({
-        where: { id: item.productId },
-      });
+  const orderId = await prisma.$transaction(
+    async (tx: Prisma.TransactionClient) => {
+      for (const item of items) {
+        const updated = await tx.product.updateMany({
+          where: {
+            id: item.productId,
+            isActive: true,
+            stock: { gte: item.quantity },
+          },
+          data: { stock: { decrement: item.quantity } },
+        });
 
-      if (!product || !product.isActive) {
-        throw createError(`Product "${item.product.name}" is no longer available`, 400);
+        if (updated.count === 0) {
+          throw createError(`Insufficient stock for "${item.product.name}"`, 400);
+        }
       }
-      if (product.stock < item.quantity) {
-        throw createError(
-          `Insufficient stock for "${product.name}". Available: ${product.stock}`,
-          400
-        );
-      }
-    }
 
-    const subtotal = items.reduce(
-      (sum, item) => sum + Number(item.product.price) * item.quantity,
-      0
-    );
-    const tax = Math.round(subtotal * TAX_RATE * 100) / 100;
-    const shippingCost = subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : 49;
-    const total = Math.round((subtotal + tax + shippingCost) * 100) / 100;
-
-    const newOrder = await tx.order.create({
-      data: {
-        orderNumber: generateOrderNumber(),
-        sessionId,
-        subtotal,
-        tax,
-        shippingCost,
-        total,
-        shippingAddress: shippingAddress as object,
-        items: {
-          create: items.map((item) => ({
-            product: { connect: { id: item.productId } },
-            productName: item.product.name,
-            quantity: item.quantity,
-            unitPrice: Number(item.product.price),
-          })),
-        },
-      },
-      include: {
-        items: {
-          include: {
-            product: {
-              include: {
-                images: { where: { isPrimary: true }, take: 1 },
-              },
-            },
+      const newOrder = await tx.order.create({
+        data: {
+          orderNumber: generateOrderNumber(),
+          sessionId,
+          subtotal,
+          tax,
+          shippingCost,
+          total,
+          shippingAddress: shippingAddress as object,
+          items: {
+            create: items.map((item) => ({
+              product: { connect: { id: item.productId } },
+              productName: item.product.name,
+              quantity: item.quantity,
+              unitPrice: Number(item.product.price),
+            })),
           },
         },
-      },
-    });
-
-    for (const item of items) {
-      await tx.product.update({
-        where: { id: item.productId },
-        data: { stock: { decrement: item.quantity } },
+        select: { id: true },
       });
-    }
 
-    // Buy Now leaves the saved cart untouched
-    if (cartId) {
-      await tx.cartItem.deleteMany({ where: { cartId } });
-    }
+      if (cartId) {
+        await tx.cartItem.deleteMany({ where: { cartId } });
+      }
 
-    return newOrder;
+      return newOrder.id;
+    },
+    { maxWait: 10_000, timeout: 15_000 }
+  );
+
+  const order = await prisma.order.findFirst({
+    where: { id: orderId },
+    include: ORDER_INCLUDE,
   });
+
+  if (!order) {
+    throw createError('Order could not be created', 500);
+  }
 
   return order;
 };
@@ -173,17 +197,7 @@ export const getOrderById = async (orderId: string, sessionId: string) => {
       id: orderId,
       OR: [{ sessionId }, { sessionId: null }],
     },
-    include: {
-      items: {
-        include: {
-          product: {
-            include: {
-              images: { where: { isPrimary: true }, take: 1 },
-            },
-          },
-        },
-      },
-    },
+    include: ORDER_INCLUDE,
   });
 
   if (!order) throw createError('Order not found', 404);
@@ -193,17 +207,7 @@ export const getOrderById = async (orderId: string, sessionId: string) => {
 export const getOrdersBySession = async (sessionId: string) => {
   return prisma.order.findMany({
     where: { sessionId },
-    include: {
-      items: {
-        include: {
-          product: {
-            include: {
-              images: { where: { isPrimary: true }, take: 1 },
-            },
-          },
-        },
-      },
-    },
+    include: ORDER_INCLUDE,
     orderBy: { createdAt: 'desc' },
   });
 };

@@ -49,16 +49,18 @@ export default function CartSheet() {
               <span>{formatPrice(subtotal)}</span>
             </div>
             <Separator />
-            <Link to="/cart" onClick={closeCart}>
-              <Button variant="amazon-outline" size="full">
-                View Full Cart
+            <div className="flex flex-col gap-2 w-full">
+              <Button variant="amazon-outline" size="full" asChild>
+                <Link to="/cart" onClick={closeCart}>
+                  View Full Cart
+                </Link>
               </Button>
-            </Link>
-            <Link to="/checkout" onClick={closeCart}>
-              <Button variant="amazon" size="full">
-                Proceed to Checkout
+              <Button variant="amazon" size="full" asChild>
+                <Link to="/checkout" onClick={closeCart}>
+                  Proceed to Checkout
+                </Link>
               </Button>
-            </Link>
+            </div>
           </div>
         )}
       </SheetContent>
