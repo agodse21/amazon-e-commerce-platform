@@ -2,27 +2,20 @@ import nodemailer from 'nodemailer';
 import { buildOrderConfirmationEmail } from '../emails/orderConfirmation.js';
 import type { ShippingAddress } from './orderService.js';
 
-const smtpHost = process.env.SMTP_HOST ?? 'smtp.gmail.com';
-const smtpPort = parseInt(process.env.SMTP_PORT ?? '587', 10);
-const smtpUser = process.env.SMTP_USER?.trim();
-const smtpPass = process.env.SMTP_PASS?.trim();
-const emailFrom = process.env.EMAIL_FROM?.trim() ?? smtpUser;
-const emailFromName = process.env.EMAIL_FROM_NAME ?? 'Amazon Store';
+const getSmtpConfig = () => {
+  const user = process.env.SMTP_USER?.trim();
+  const pass = process.env.SMTP_PASS?.trim();
+  const from = process.env.EMAIL_FROM?.trim() ?? user;
 
-const isSmtpConfigured = Boolean(smtpUser && smtpPass && emailFrom);
-
-let transporter: nodemailer.Transporter | null = null;
-
-const getTransporter = (): nodemailer.Transporter => {
-  if (!transporter) {
-    transporter = nodemailer.createTransport({
-      host: smtpHost,
-      port: smtpPort,
-      secure: smtpPort === 465,
-      auth: { user: smtpUser, pass: smtpPass },
-    });
-  }
-  return transporter;
+  return {
+    host: process.env.SMTP_HOST ?? 'smtp.gmail.com',
+    port: parseInt(process.env.SMTP_PORT ?? '587', 10),
+    user,
+    pass,
+    from,
+    fromName: process.env.EMAIL_FROM_NAME ?? 'Amazon Store',
+    isConfigured: Boolean(user && pass && from),
+  };
 };
 
 export interface OrderForEmail {
@@ -65,15 +58,23 @@ export const sendOrderConfirmationEmail = async (order: OrderForEmail): Promise<
   };
 
   const { subject, html, text } = buildOrderConfirmationEmail(emailData);
+  const smtp = getSmtpConfig();
 
-  if (!isSmtpConfigured) {
+  if (!smtp.isConfigured) {
     console.log('[EMAIL] SMTP not configured — logging order confirmation');
     console.log({ to: recipient, subject, text });
     return;
   }
 
-  const info = await getTransporter().sendMail({
-    from: `${emailFromName} <${emailFrom}>`,
+  const transporter = nodemailer.createTransport({
+    host: smtp.host,
+    port: smtp.port,
+    secure: smtp.port === 465,
+    auth: { user: smtp.user, pass: smtp.pass },
+  });
+
+  const info = await transporter.sendMail({
+    from: `${smtp.fromName} <${smtp.from}>`,
     to: recipient,
     subject,
     html,

@@ -190,9 +190,11 @@ export const createOrder = async (
     throw createError('Order could not be created', 500);
   }
 
-  void sendOrderConfirmationEmail(order).catch((err) => {
+  try {
+    await sendOrderConfirmationEmail(order);
+  } catch (err) {
     console.error('[EMAIL] Order confirmation failed:', err);
-  });
+  }
 
   return order;
 };
