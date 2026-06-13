@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ProductImage as ProductImageEl } from '@/components/ui/product-image';
+import WishlistButton from '@/components/wishlist/WishlistButton';
 import type { ProductImage } from '@/types';
 
 interface ImageCarouselProps {
   images: ProductImage[];
   productName: string;
+  productId?: string;
 }
 
-export default function ImageCarousel({ images, productName }: ImageCarouselProps) {
+export default function ImageCarousel({ images, productName, productId }: ImageCarouselProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   if (images.length === 0) {
@@ -26,7 +28,12 @@ export default function ImageCarousel({ images, productName }: ImageCarouselProp
     <div className="flex flex-col md:flex-row gap-3 w-full">
       {/* Main image */}
       <div className="flex-1 relative group order-1 md:order-2 min-w-0">
-        <div className="aspect-square border border-gray-100 rounded overflow-hidden flex items-center justify-center">
+        <div className="relative aspect-square border border-gray-100 rounded overflow-hidden flex items-center justify-center">
+          {productId && (
+            <div className="absolute top-2 right-2 z-10">
+              <WishlistButton productId={productId} />
+            </div>
+          )}
           <ProductImageEl
             src={images[activeIndex]?.url}
             alt={`${productName} — image ${activeIndex + 1}`}

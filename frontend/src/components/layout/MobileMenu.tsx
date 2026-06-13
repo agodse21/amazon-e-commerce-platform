@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { MapPin, Package, User } from 'lucide-react';
+import { MapPin, Package, User, Heart } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
@@ -65,6 +65,15 @@ export default function MobileMenu({
           >
             <Package className="h-5 w-5" />
             <span>Returns & Orders</span>
+          </Link>
+
+          <Link
+            to="/wishlist"
+            onClick={() => onOpenChange(false)}
+            className="flex items-center gap-3 px-4 py-3 hover:bg-white/10 text-white no-underline border-b border-white/10"
+          >
+            <Heart className="h-5 w-5" />
+            <span>Your Wish List</span>
           </Link>
 
           <div className="px-4 py-2 text-xs font-bold uppercase tracking-wide text-gray-300">

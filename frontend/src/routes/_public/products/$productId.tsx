@@ -55,7 +55,7 @@ function ProductDetailPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)_300px] gap-4 md:gap-6">
         {/* Image carousel */}
         <div className="w-full max-w-full md:max-w-lg lg:max-w-none mx-auto">
-          <ImageCarousel images={product.images} productName={product.name} />
+          <ImageCarousel images={product.images} productName={product.name} productId={product.id} />
         </div>
 
         {/* Product info — middle column */}

@@ -2,11 +2,11 @@ import { Link } from '@tanstack/react-router';
 import { Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-
 import { ProductImage } from '@/components/ui/product-image';
 import { formatPrice, formatDiscount, truncate } from '@/lib/utils';
 import type { ProductSummary } from '@/types';
 import useCart from '@/hooks/useCart';
+import WishlistButton from '@/components/wishlist/WishlistButton';
 
 interface ProductCardProps {
   product: ProductSummary;
@@ -37,6 +37,9 @@ export default function ProductCard({ product }: ProductCardProps) {
               -{discount}%
             </Badge>
           )}
+          <div className="absolute top-2 right-2 z-10">
+            <WishlistButton productId={product.id} size="sm" />
+          </div>
           <ProductImage
             images={product.images}
             alt={product.name}

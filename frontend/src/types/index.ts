@@ -65,6 +65,18 @@ export interface Cart {
   updatedAt: string;
 }
 
+// ─── Wishlist ─────────────────────────────────────────────────────────────────
+export interface WishlistItem {
+  id: string;
+  productId: string;
+  createdAt: string;
+  product: ProductSummary;
+}
+
+export interface Wishlist {
+  items: WishlistItem[];
+}
+
 // ─── Orders ───────────────────────────────────────────────────────────────────
 export interface ShippingAddress {
   fullName: string;

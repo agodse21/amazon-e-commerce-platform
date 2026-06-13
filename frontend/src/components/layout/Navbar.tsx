@@ -1,14 +1,19 @@
 import { useState } from 'react';
 import { Link, useNavigate, useRouterState } from '@tanstack/react-router';
-import { ShoppingCart, MapPin, ChevronDown, Menu } from 'lucide-react';
+import { ShoppingCart, MapPin, ChevronDown, Menu, Heart } from 'lucide-react';
 import CategoryNavDropdowns from './CategoryNavDropdowns';
 import MobileMenu from './MobileMenu';
 import { useCartStore } from '@/store/cartStore';
+import { useWishlistStore } from '@/store/wishlistStore';
+import useWishlist from '@/hooks/useWishlist';
 import SearchBar from './SearchBar';
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { itemCount, openCart } = useCartStore();
+  const wishlistCount = useWishlistStore((s) => s.itemCount);
+  const { useGetWishlist } = useWishlist();
+  useGetWishlist();
   const navigate = useNavigate();
 
   const categoryId = useRouterState({
@@ -80,6 +85,19 @@ export default function Navbar() {
           <Link to="/orders" className="navbar-link hidden md:block">
             <div className="text-[11px] text-gray-300">Returns</div>
             <div className="text-sm font-bold">& Orders</div>
+          </Link>
+
+          {/* Wishlist */}
+          <Link to="/wishlist" className="navbar-link flex items-end gap-1 relative">
+            <div className="relative">
+              <Heart className="h-6 w-6 sm:h-7 sm:w-7 text-white" />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-amazon-orange text-black text-xs font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-0.5">
+                  {wishlistCount}
+                </span>
+              )}
+            </div>
+            <span className="text-sm font-bold hidden sm:inline">Wishlist</span>
           </Link>
 
           {/* Cart */}

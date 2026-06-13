@@ -157,7 +157,7 @@ export default function SearchBar() {
   };
 
   return (
-    <div ref={containerRef} className="relative flex-1 min-w-0 max-w-3xl">
+    <div ref={containerRef} className="relative flex-1 min-w-0 max-w-6xl">
       <form onSubmit={handleSubmit} className="flex rounded overflow-hidden">
         {/* Category selector */}
         <select className="bg-[#f3f3f3] border-none text-xs text-gray-700 px-2 rounded-l hidden sm:block cursor-pointer focus:outline-none max-w-[5rem]">
