@@ -1,9 +1,11 @@
 import { Prisma } from '@prisma/client';
 import { prisma } from '../utils/prisma.js';
 import { createError } from '../middleware/errorHandler.js';
+import { sendOrderConfirmationEmail } from './emailService.js';
 
 export interface ShippingAddress {
   fullName: string;
+  email: string;
   street: string;
   city: string;
   state: string;
@@ -187,6 +189,10 @@ export const createOrder = async (
   if (!order) {
     throw createError('Order could not be created', 500);
   }
+
+  void sendOrderConfirmationEmail(order).catch((err) => {
+    console.error('[EMAIL] Order confirmation failed:', err);
+  });
 
   return order;
 };

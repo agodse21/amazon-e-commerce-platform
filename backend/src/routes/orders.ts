@@ -8,6 +8,7 @@ const router = Router();
 
 const shippingAddressSchema = z.object({
   fullName: z.string().min(2).max(100),
+  email: z.string().email().max(254),
   street: z.string().min(5).max(200),
   city: z.string().min(2).max(100),
   state: z.string().min(2).max(100),

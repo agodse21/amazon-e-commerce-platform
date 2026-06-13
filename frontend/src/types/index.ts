@@ -80,6 +80,7 @@ export interface Wishlist {
 // ─── Orders ───────────────────────────────────────────────────────────────────
 export interface ShippingAddress {
   fullName: string;
+  email: string;
   street: string;
   city: string;
   state: string;

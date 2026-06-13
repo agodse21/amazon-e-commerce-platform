@@ -82,6 +82,7 @@ Single Vercel project — static frontend from `dist/` and API from `api/index.t
 
 1. Connect repo to Vercel
 2. Set env vars: `DATABASE_URL` (Neon), `ALLOWED_ORIGINS`, `NODE_ENV=production`
+   - Optional email (Gmail SMTP): `SMTP_USER`, `SMTP_PASS` (Google App Password), `EMAIL_FROM`, `EMAIL_FROM_NAME`. Without SMTP credentials, confirmations are logged to the server console.
 3. Run migrations against production DB once
 4. Deploy
 

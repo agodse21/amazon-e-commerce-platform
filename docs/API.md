@@ -62,11 +62,14 @@ Each item includes nested `product` (summary + primary image).
 
 **Pricing:** subtotal + 8% tax + shipping (₹0 if subtotal ≥ ₹499, else ₹49). Stock decremented in a transaction; cart cleared after order.
 
+After a successful order, a confirmation email is sent to `shippingAddress.email` via Gmail SMTP (Nodemailer) when `SMTP_USER` and `SMTP_PASS` are set; otherwise logged to the server console in development.
+
 ## Shipping address shape
 
 ```json
 {
   "fullName": "...",
+  "email": "...",
   "street": "...",
   "city": "...",
   "state": "...",

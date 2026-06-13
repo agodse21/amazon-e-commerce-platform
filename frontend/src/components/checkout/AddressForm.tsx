@@ -22,6 +22,7 @@ import type { ShippingAddress } from '@/types';
 
 const addressSchema = z.object({
   fullName: z.string().min(2, 'Full name must be at least 2 characters'),
+  email: z.string().email('Please enter a valid email address'),
   street: z.string().min(5, 'Please enter a valid street address'),
   city: z.string().min(2, 'Please enter a valid city'),
   state: z.string().min(2, 'Please select a state'),
@@ -81,6 +82,7 @@ export default function AddressForm({ onSubmit, isSubmitting }: AddressFormProps
     resolver: zodResolver(addressSchema),
     defaultValues: {
       fullName: '',
+      email: '',
       street: '',
       city: '',
       state: '',
@@ -108,6 +110,20 @@ export default function AddressForm({ onSubmit, isSubmitting }: AddressFormProps
               <FormLabel>Full Name</FormLabel>
               <FormControl>
                 <Input placeholder="John Doe" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input placeholder="you@example.com" type="email" autoComplete="email" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

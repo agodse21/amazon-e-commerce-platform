@@ -49,7 +49,16 @@ function OrderConfirmationPage() {
           <div>
             <h1 className="text-xl font-bold text-green-800 mb-1">Order Placed Successfully!</h1>
             <p className="text-sm text-gray-600">
-              Your order has been confirmed. You'll receive a confirmation shortly.
+              Your order has been confirmed.
+              {addr.email ? (
+                <>
+                  {' '}
+                  A confirmation email has been sent to{' '}
+                  <span className="font-medium text-gray-800">{addr.email}</span>.
+                </>
+              ) : (
+                " You'll receive a confirmation shortly."
+              )}
             </p>
             <p className="text-sm font-medium mt-1">
               Order ID: <span className="font-bold text-amazon-link-blue">{order.orderNumber}</span>
