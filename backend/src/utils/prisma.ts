@@ -1,7 +1,6 @@
 import { PrismaClient, type Prisma } from '@prisma/client';
-import { Pool, neonConfig } from '@neondatabase/serverless';
-import { PrismaNeon } from '@prisma/adapter-neon';
-import ws from 'ws';
+import { neon } from '@neondatabase/serverless';
+import { PrismaNeonHTTP } from '@prisma/adapter-neon';
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
@@ -15,11 +14,11 @@ function createNeonClient(log: Prisma.LogLevel[]): PrismaClient {
     throw new Error('DATABASE_URL is not set');
   }
 
-  neonConfig.webSocketConstructor = ws;
-  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+  const sql = neon(process.env.DATABASE_URL);
+  const adapter = new PrismaNeonHTTP(sql);
 
   const options = {
-    adapter: new PrismaNeon(pool),
+    adapter,
     log,
   } as Prisma.PrismaClientOptions;
 
@@ -29,7 +28,7 @@ function createNeonClient(log: Prisma.LogLevel[]): PrismaClient {
 function createPrismaClient(): PrismaClient {
   const log = process.env.NODE_ENV === 'development' ? devLog : prodLog;
 
-  // Vercel + Neon: use the serverless driver adapter (no query-engine binary to bundle)
+  // Vercel + Neon: HTTP driver adapter (no query-engine binary or ws to bundle)
   if (process.env.VERCEL === '1') {
     return createNeonClient(log);
   }
