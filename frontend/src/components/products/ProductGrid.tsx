@@ -63,7 +63,7 @@ export default function ProductGrid({
         {allProducts.map((product, index) => {
           const isLast = index === allProducts.length - 1;
           return (
-            <div key={product.id} ref={isLast ? lastItemRef : undefined}>
+            <div key={product.id} className="h-full" ref={isLast ? lastItemRef : undefined}>
               <ProductCard product={product} />
             </div>
           );
@@ -83,12 +83,14 @@ export default function ProductGrid({
 
 function ProductCardSkeleton() {
   return (
-    <div className="bg-white rounded p-4 space-y-3">
-      <Skeleton className="aspect-square w-full rounded" />
-      <Skeleton className="h-4 w-full" />
+    <div className="bg-white rounded p-2 sm:p-4 h-full flex flex-col space-y-3">
+      <Skeleton className="aspect-square w-full rounded flex-shrink-0" />
+      <Skeleton className="h-10 w-full" />
       <Skeleton className="h-4 w-3/4" />
-      <Skeleton className="h-5 w-1/2" />
-      <Skeleton className="h-8 w-full rounded-full" />
+      <div className="mt-auto space-y-2">
+        <Skeleton className="h-5 w-1/2" />
+        <Skeleton className="h-8 w-full rounded-full" />
+      </div>
     </div>
   );
 }

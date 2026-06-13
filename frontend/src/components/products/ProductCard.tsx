@@ -27,11 +27,11 @@ export default function ProductCard({ product }: ProductCardProps) {
     <Link
       to="/products/$productId"
       params={{ productId: product.id }}
-      className="block no-underline"
+      className="block h-full no-underline"
     >
       <div className="product-card group h-full flex flex-col">
         {/* Image */}
-        <div className="relative aspect-square mb-3 overflow-hidden rounded bg-gray-50">
+        <div className="relative aspect-square mb-3 overflow-hidden rounded bg-gray-50 flex-shrink-0">
           {discount > 0 && (
             <Badge variant="discount" className="absolute top-2 left-2 z-10">
               -{discount}%
@@ -48,63 +48,69 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Details */}
-        <div className="flex flex-col flex-1">
-          {/* Name */}
-          <h3 className="text-sm text-gray-900 hover:text-amazon-orange line-clamp-2 mb-1 leading-snug">
+        <div className="flex flex-col flex-1 min-h-0">
+          {/* Name — fixed 2-line slot so titles align across the row */}
+          <h3 className="text-sm text-gray-900 hover:text-amazon-orange line-clamp-2 min-h-[2.5rem] mb-1 leading-snug">
             {truncate(product.name, 80)}
           </h3>
 
-          {/* Rating */}
-          {Number(product.ratingAvg) > 0 && (
-            <div className="flex items-center gap-1 mb-1">
-              <div className="flex">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star
-                    key={i}
-                    className={`h-3.5 w-3.5 ${
-                      i < Math.round(Number(product.ratingAvg))
-                        ? 'fill-amazon-orange text-amazon-orange'
-                        : 'fill-gray-200 text-gray-200'
-                    }`}
-                  />
-                ))}
-              </div>
-              <span className="text-xs text-amazon-link-blue">
-                ({product.ratingCount.toLocaleString()})
-              </span>
-            </div>
-          )}
+          {/* Rating — fixed height slot (empty when no ratings) */}
+          <div className="flex items-center gap-1 mb-2 min-h-[1.125rem]">
+            {Number(product.ratingAvg) > 0 ? (
+              <>
+                <div className="flex">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star
+                      key={i}
+                      className={`h-3.5 w-3.5 ${
+                        i < Math.round(Number(product.ratingAvg))
+                          ? 'fill-amazon-orange text-amazon-orange'
+                          : 'fill-gray-200 text-gray-200'
+                      }`}
+                    />
+                  ))}
+                </div>
+                <span className="text-xs text-amazon-link-blue">
+                  ({product.ratingCount.toLocaleString()})
+                </span>
+              </>
+            ) : null}
+          </div>
 
-          {/* Price */}
+          {/* Price + CTA pinned to bottom */}
           <div className="mt-auto">
-            <div className="flex items-baseline gap-2">
-              <span className="price-display">{formatPrice(product.price)}</span>
+            <div className="flex items-baseline gap-2 flex-wrap">
+              <span className="price-display text-lg sm:text-xl">{formatPrice(product.price)}</span>
               {product.originalPrice && (
                 <span className="original-price">{formatPrice(product.originalPrice)}</span>
               )}
             </div>
-            {discount > 0 && <p className="discount-badge text-xs">Save {discount}%</p>}
-
-            {/* Stock */}
-            {product.stock === 0 ? (
-              <p className="stock-out text-xs mt-1">Out of Stock</p>
-            ) : product.stock <= 5 ? (
-              <p className="text-[#CC0C39] text-xs mt-1">Only {product.stock} left in stock</p>
+            {discount > 0 ? (
+              <p className="discount-badge text-xs">Save {discount}%</p>
             ) : (
-              <p className="stock-in text-xs mt-1">In Stock</p>
+              <p className="text-xs min-h-[1rem]" aria-hidden="true" />
             )}
-          </div>
 
-          {/* Add to cart */}
-          <Button
-            variant="amazon"
-            size="sm"
-            className="mt-3 w-full"
-            onClick={handleAddToCart}
-            disabled={product.stock === 0 || addToCart.isPending}
-          >
-            {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
-          </Button>
+            <p className="text-xs mt-1 min-h-[1rem]">
+              {product.stock === 0 ? (
+                <span className="stock-out">Out of Stock</span>
+              ) : product.stock <= 5 ? (
+                <span className="text-[#CC0C39]">Only {product.stock} left in stock</span>
+              ) : (
+                <span className="stock-in">In Stock</span>
+              )}
+            </p>
+
+            <Button
+              variant="amazon"
+              size="sm"
+              className="mt-3 w-full"
+              onClick={handleAddToCart}
+              disabled={product.stock === 0 || addToCart.isPending}
+            >
+              {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+            </Button>
+          </div>
         </div>
       </div>
     </Link>

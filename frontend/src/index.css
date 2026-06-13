@@ -90,7 +90,7 @@
 
   /* Product card container */
   .product-card {
-    @apply bg-white p-2 sm:p-4 hover:shadow-md transition-all duration-200 border border-transparent hover:border-gray-200 cursor-pointer rounded;
+    @apply bg-white p-2 sm:p-4 hover:shadow-md transition-all duration-200 border border-transparent hover:border-gray-200 cursor-pointer rounded h-full;
   }
 
   /* Price display - Amazon red */
