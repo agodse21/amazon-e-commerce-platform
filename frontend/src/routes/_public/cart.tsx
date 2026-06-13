@@ -45,9 +45,9 @@ function CartPage() {
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 items-start">
         {/* Cart items */}
         <div className="amazon-panel">
-          <h1 className="text-2xl font-medium mb-1">Shopping Cart</h1>
+          <h1 className="text-xl sm:text-2xl font-medium mb-1">Shopping Cart</h1>
           {cart && cart.items.length > 0 && (
-            <p className="text-sm text-amazon-link-blue text-right mb-2">Price</p>
+            <p className="text-sm text-amazon-link-blue text-right mb-2 hidden sm:block">Price</p>
           )}
           <hr className="border-gray-200 mb-2" />
 
@@ -78,7 +78,7 @@ function CartPage() {
 
         {/* Summary sidebar */}
         {cart && cart.items.length > 0 && (
-          <div className="sticky top-24">
+          <div className="lg:sticky lg:top-24">
             <CartSummary subtotal={subtotal} itemCount={itemCount} />
           </div>
         )}

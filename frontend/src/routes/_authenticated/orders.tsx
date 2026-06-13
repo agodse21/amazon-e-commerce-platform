@@ -24,7 +24,7 @@ function OrderHistoryPage() {
 
   return (
     <div className="page-container max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Your Orders</h1>
+      <h1 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Your Orders</h1>
 
       {isLoading ? (
         <div className="space-y-4">
@@ -46,8 +46,8 @@ function OrderHistoryPage() {
           {orders.map((order: Order) => (
             <div key={order.id} className="amazon-panel">
               {/* Header */}
-              <div className="flex flex-wrap justify-between gap-4 mb-3 pb-3 border-b border-gray-200">
-                <div className="grid grid-cols-3 gap-6 text-xs text-gray-600">
+              <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:justify-between sm:gap-4 mb-3 pb-3 border-b border-gray-200">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6 text-xs text-gray-600 flex-1 min-w-0">
                   <div>
                     <p className="uppercase font-bold mb-0.5">Order Placed</p>
                     <p>
@@ -67,7 +67,7 @@ function OrderHistoryPage() {
                     <p>{order.shippingAddress.fullName}</p>
                   </div>
                 </div>
-                <div className="text-xs text-gray-600 text-right">
+                <div className="text-xs text-gray-600 sm:text-right flex-shrink-0">
                   <p className="font-bold uppercase mb-0.5">Order # {order.orderNumber}</p>
                   <span
                     className={`inline-flex items-center px-2 py-0.5 rounded-full border text-xs font-medium capitalize ${statusColors[order.status] ?? ''}`}
@@ -100,7 +100,7 @@ function OrderHistoryPage() {
               </div>
 
               {/* Footer */}
-              <div className="mt-3 flex justify-between items-center">
+              <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center">
                 <p className="text-sm text-gray-700 line-clamp-1">
                   {order.items[0]?.productName}
                   {order.items.length > 1 && ` and ${order.items.length - 1} more item(s)`}

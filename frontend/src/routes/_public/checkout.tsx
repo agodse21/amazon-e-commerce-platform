@@ -96,10 +96,10 @@ function CheckoutPage() {
 
   return (
     <div className="page-container">
-      <div className="flex items-center gap-3 mb-6">
-        <h1 className="text-2xl font-bold text-amazon-navy">Checkout</h1>
-        <Lock className="h-5 w-5 text-gray-500" />
-        <span className="text-sm text-gray-500">Secure checkout</span>
+      <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+        <h1 className="text-xl sm:text-2xl font-bold text-amazon-navy">Checkout</h1>
+        <Lock className="h-4 w-4 sm:h-5 sm:w-5 text-gray-500" />
+        <span className="text-xs sm:text-sm text-gray-500">Secure checkout</span>
       </div>
 
       {isBuyNow && (
@@ -119,7 +119,7 @@ function CheckoutPage() {
           <AddressForm onSubmit={handlePlaceOrder} isSubmitting={createOrder.isPending} />
         </div>
 
-        <div className="sticky top-24">
+        <div className="lg:sticky lg:top-24">
           <OrderSummaryPanel items={checkoutItems} />
         </div>
       </div>

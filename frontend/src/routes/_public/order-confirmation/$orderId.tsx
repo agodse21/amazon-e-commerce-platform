@@ -61,28 +61,58 @@ function OrderConfirmationPage() {
       {/* Delivery timeline */}
       <div className="amazon-panel mb-6">
         <h2 className="font-bold text-base mb-4">Delivery Status</h2>
-        <div className="flex items-center gap-2">
+
+        {/* Mobile: vertical timeline */}
+        <div className="md:hidden space-y-0">
           {[
             { icon: CheckCircle2, label: 'Order Confirmed', done: true },
             { icon: Package, label: 'Processing', done: false },
             { icon: Truck, label: 'Shipped', done: false },
             { icon: Home, label: 'Delivered', done: false },
           ].map((step, i, arr) => (
-            <div key={step.label} className="flex items-center flex-1">
-              <div className="flex flex-col items-center gap-1">
+            <div key={step.label} className="flex gap-3">
+              <div className="flex flex-col items-center">
+                <div
+                  className={`rounded-full p-2 ${step.done ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400'}`}
+                >
+                  <step.icon className="h-5 w-5" />
+                </div>
+                {i < arr.length - 1 && (
+                  <div className={`w-0.5 flex-1 my-1 min-h-[1.5rem] ${i === 0 ? 'bg-green-400' : 'bg-gray-200'}`} />
+                )}
+              </div>
+              <div className="pb-4 pt-1">
+                <span className={`text-sm ${step.done ? 'font-medium text-green-700' : 'text-gray-500'}`}>
+                  {step.label}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Tablet+: horizontal timeline */}
+        <div className="hidden md:flex items-center gap-2">
+          {[
+            { icon: CheckCircle2, label: 'Order Confirmed', done: true },
+            { icon: Package, label: 'Processing', done: false },
+            { icon: Truck, label: 'Shipped', done: false },
+            { icon: Home, label: 'Delivered', done: false },
+          ].map((step, i, arr) => (
+            <div key={step.label} className="flex items-center flex-1 min-w-0">
+              <div className="flex flex-col items-center gap-1 flex-shrink-0">
                 <div
                   className={`rounded-full p-2 ${step.done ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400'}`}
                 >
                   <step.icon className="h-5 w-5" />
                 </div>
                 <span
-                  className={`text-xs text-center ${step.done ? 'font-medium text-green-700' : 'text-gray-500'}`}
+                  className={`text-xs text-center leading-tight ${step.done ? 'font-medium text-green-700' : 'text-gray-500'}`}
                 >
                   {step.label}
                 </span>
               </div>
               {i < arr.length - 1 && (
-                <div className={`flex-1 h-0.5 mx-1 ${i === 0 ? 'bg-green-400' : 'bg-gray-200'}`} />
+                <div className={`flex-1 h-0.5 mx-1 min-w-[1rem] ${i === 0 ? 'bg-green-400' : 'bg-gray-200'}`} />
               )}
             </div>
           ))}
@@ -136,7 +166,7 @@ function OrderConfirmationPage() {
         </h2>
         <div className="space-y-4">
           {order.items.map((item: OrderItem) => (
-            <div key={item.id} className="flex gap-4 py-2 border-b border-gray-100 last:border-0">
+            <div key={item.id} className="flex flex-col sm:flex-row gap-3 sm:gap-4 py-2 border-b border-gray-100 last:border-0">
               <ProductImage
                 src={
                   item.product?.images ? getPrimaryImage(item.product.images) : item.productImage

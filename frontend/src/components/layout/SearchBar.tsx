@@ -157,10 +157,10 @@ export default function SearchBar() {
   };
 
   return (
-    <div ref={containerRef} className="relative flex-1 max-w-3xl">
+    <div ref={containerRef} className="relative flex-1 min-w-0 max-w-3xl">
       <form onSubmit={handleSubmit} className="flex rounded overflow-hidden">
         {/* Category selector */}
-        <select className="bg-[#f3f3f3] border-none text-xs text-gray-700 px-2 rounded-l hidden sm:block cursor-pointer focus:outline-none">
+        <select className="bg-[#f3f3f3] border-none text-xs text-gray-700 px-2 rounded-l hidden sm:block cursor-pointer focus:outline-none max-w-[5rem]">
           <option>All</option>
         </select>
 
@@ -180,14 +180,14 @@ export default function SearchBar() {
           aria-autocomplete="list"
           aria-expanded={isOpen}
           aria-haspopup="listbox"
-          className="flex-1 px-3 py-2 text-sm text-black focus:outline-none border-none"
+          className="flex-1 min-w-0 px-2 sm:px-3 py-2 text-sm text-black focus:outline-none border-none"
         />
 
         {/* Search button */}
         <button
           type="submit"
           aria-label="Search"
-          className="bg-amazon-orange hover:bg-amazon-orange-dark px-4 flex items-center justify-center transition-colors"
+          className="bg-amazon-orange hover:bg-amazon-orange-dark px-3 sm:px-4 flex items-center justify-center transition-colors flex-shrink-0"
         >
           {isLoading ? (
             <Loader2 className="h-5 w-5 text-black animate-spin" />

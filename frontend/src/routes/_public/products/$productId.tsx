@@ -52,15 +52,17 @@ function ProductDetailPage() {
         <span className="text-gray-700 truncate max-w-xs">{product.name}</span>
       </nav>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[auto_1fr_300px] gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)_300px] gap-4 md:gap-6">
         {/* Image carousel */}
-        <div className="lg:w-80 xl:w-[42rem]">
+        <div className="w-full max-w-full md:max-w-lg lg:max-w-none mx-auto">
           <ImageCarousel images={product.images} productName={product.name} />
         </div>
 
         {/* Product info — middle column */}
         <div className="min-w-0">
-          <h1 className="text-xl font-medium text-gray-900 mb-2 leading-snug">{product.name}</h1>
+          <h1 className="text-lg sm:text-xl font-medium text-gray-900 mb-2 leading-snug">
+            {product.name}
+          </h1>
 
           {/* Brand / category */}
           <p className="text-sm text-amazon-link-blue mb-2">
@@ -104,7 +106,7 @@ function ProductDetailPage() {
             )}
             <div className="flex items-baseline gap-1">
               <span className="text-xs text-gray-700">₹</span>
-              <span className="text-3xl font-medium text-[#B12704]">
+              <span className="text-2xl sm:text-3xl font-medium text-[#B12704]">
                 {parseFloat(product.price).toLocaleString('en-IN')}
               </span>
             </div>
@@ -125,12 +127,19 @@ function ProductDetailPage() {
           {product.specifications.length > 0 && (
             <div className="mb-4">
               <h3 className="font-bold text-sm mb-2">Technical Details</h3>
-              <table className="text-sm w-full">
-                <tbody>
+              <table className="text-sm w-full block sm:table">
+                <tbody className="block sm:table-row-group">
                   {product.specifications.map((spec: ProductSpecification) => (
-                    <tr key={spec.id} className="border-b border-gray-100">
-                      <td className="py-1.5 pr-4 text-gray-600 w-2/5 font-medium">{spec.key}</td>
-                      <td className="py-1.5 text-gray-900">{spec.value}</td>
+                    <tr
+                      key={spec.id}
+                      className="block sm:table-row border-b border-gray-100 sm:border-0"
+                    >
+                      <td className="block sm:table-cell py-1.5 pr-4 text-gray-600 sm:w-2/5 font-medium">
+                        {spec.key}
+                      </td>
+                      <td className="block sm:table-cell py-1.5 pb-3 sm:pb-1.5 text-gray-900">
+                        {spec.value}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -139,8 +148,8 @@ function ProductDetailPage() {
           )}
         </div>
 
-        {/* Buy box — right column */}
-        <div className="amazon-panel h-fit">
+        {/* Buy box — right column (also shown on mobile/tablet as sticky panel) */}
+        <div className="amazon-panel h-fit lg:sticky lg:top-24">
           <div className="text-2xl font-medium text-[#B12704] mb-1">
             {formatPrice(product.price)}
           </div>

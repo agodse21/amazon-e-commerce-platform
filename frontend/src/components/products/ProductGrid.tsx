@@ -40,7 +40,7 @@ export default function ProductGrid({
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3 md:gap-4">
         {Array.from({ length: 10 }).map((_, i) => (
           <ProductCardSkeleton key={i} />
         ))}
@@ -59,7 +59,7 @@ export default function ProductGrid({
 
   return (
     <>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3 md:gap-4">
         {allProducts.map((product, index) => {
           const isLast = index === allProducts.length - 1;
           return (
@@ -71,7 +71,7 @@ export default function ProductGrid({
       </div>
 
       {isFetchingNextPage && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-3 md:gap-4 mt-4">
           {Array.from({ length: 5 }).map((_, i) => (
             <ProductCardSkeleton key={i} />
           ))}

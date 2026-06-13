@@ -10,7 +10,7 @@ export default function Footer() {
       </div>
 
       {/* Links */}
-      <div className="bg-amazon-navy-light text-white py-8 px-8">
+      <div className="bg-amazon-navy-light text-white py-6 sm:py-8 px-4 sm:px-8">
         <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
           {[
             {
@@ -47,7 +47,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="bg-amazon-navy border-t border-gray-700 py-4 px-8 text-center">
+      <div className="bg-amazon-navy border-t border-gray-700 py-4 px-4 sm:px-8 text-center">
         <p className="text-white font-bold text-xl mb-2">amazon</p>
         <p className="text-gray-400 text-xs">
           © 2026, Amazon.com, Inc. or its affiliates. This is a demo project.

@@ -50,10 +50,14 @@ function HomePage() {
     <div className="page-container">
       {/* Hero banner (simple Amazon-style) */}
       {!search && !categoryId && (
-        <div className="mb-6 rounded overflow-hidden bg-gradient-to-r from-amazon-navy to-amazon-navy-light h-48 flex items-center justify-center text-white">
+        <div className="mb-4 sm:mb-6 rounded overflow-hidden bg-gradient-to-r from-amazon-navy to-amazon-navy-light h-32 sm:h-40 md:h-48 flex items-center justify-center text-white px-4">
           <div className="text-center">
-            <h1 className="text-3xl font-bold mb-2">Welcome to Amazon Clone</h1>
-            <p className="text-gray-300">Discover great deals across all categories</p>
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-1 sm:mb-2">
+              Welcome to Amazon Clone
+            </h1>
+            <p className="text-sm sm:text-base text-gray-300">
+              Discover great deals across all categories
+            </p>
           </div>
         </div>
       )}
@@ -75,8 +79,8 @@ function HomePage() {
       )}
 
       {/* Results count + sort */}
-      <div className="flex items-center justify-between gap-4 mb-4 bg-white rounded p-3 border border-gray-200">
-        <p className="text-sm text-gray-600 min-w-0">
+      <div className="flex flex-col items-center justify-center sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 mb-4 bg-white rounded p-3 border border-gray-200">
+        <p className="text-sm text-gray-600 min-w-0 text-center sm:text-left">
           {isLoading ? (
             'Loading results…'
           ) : totalItems > 0 ? (
@@ -88,10 +92,10 @@ function HomePage() {
             'No results found'
           )}
         </p>
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex items-center justify-center gap-2 w-full sm:w-auto sm:flex-shrink-0">
           <span className="text-sm text-gray-600 hidden sm:inline whitespace-nowrap">Sort by:</span>
           <Select value={sortBy ?? 'newest'} onValueChange={handleSortChange}>
-            <SelectTrigger className="w-36 h-8 text-sm">
+            <SelectTrigger className="w-full sm:w-36 h-8 text-sm">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

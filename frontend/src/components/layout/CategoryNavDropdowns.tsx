@@ -63,7 +63,6 @@ function GroupDropdown({
           )}
           onMouseEnter={onOpen}
           onMouseLeave={onScheduleClose}
-          onPointerDown={(e) => e.preventDefault()}
         >
           {selectedInGroup ? selectedInGroup.name : groupLabel}
           <ChevronDown

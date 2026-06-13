@@ -90,7 +90,7 @@
 
   /* Product card container */
   .product-card {
-    @apply bg-white p-4 hover:shadow-md transition-all duration-200 border border-transparent hover:border-gray-200 cursor-pointer rounded;
+    @apply bg-white p-2 sm:p-4 hover:shadow-md transition-all duration-200 border border-transparent hover:border-gray-200 cursor-pointer rounded;
   }
 
   /* Price display - Amazon red */
@@ -139,7 +139,17 @@
 
   /* Page content wrapper */
   .page-container {
-    @apply max-w-[1500px] mx-auto px-4 py-4;
+    @apply max-w-[1500px] mx-auto px-3 sm:px-4 py-3 sm:py-4;
+  }
+
+  /* Hide scrollbars while keeping scroll (category nav) */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 
   /* Stock badge */
