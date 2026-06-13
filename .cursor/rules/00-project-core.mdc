@@ -15,7 +15,7 @@ Read `docs/CONVENTIONS.md` and `docs/ARCHITECTURE.md` when unsure.
 - Backend: routes → controllers → services → Prisma
 - Frontend: hooks for API, components for UI
 - API shape: `{ success, data?, message? }` via `utils/response.ts`
-- Session cart: cookies + `withCredentials: true` on axios
+- Session cart + wishlist: cookies + `withCredentials: true` on axios
 - Update `docs/API.md` when adding endpoints
 - Keep diffs small
 

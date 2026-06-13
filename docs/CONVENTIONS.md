@@ -21,8 +21,8 @@ routes → controllers → services → Prisma
 
 ## Frontend
 
-- API calls in hooks (`useProducts`, `useCart`, …) — not in components
-- TanStack Query for server state, Zustand for cart drawer UI only
+- API calls in hooks (`useProducts`, `useCart`, `useWishlist`, …) — not in components
+- TanStack Query for server state, Zustand for cart drawer + wishlist badge count
 - Routes under `_public/` or `_authenticated/`
 - `@/` alias → `frontend/src/`
 
@@ -31,6 +31,10 @@ routes → controllers → services → Prisma
 Amazon tokens in `tailwind.config.ts` + `index.css`. Yellow Add to Cart, red prices, `#EAEDED` page bg.
 
 Use `ProductImage` for thumbnails. Toasts via `sonner`.
+
+**Responsive:** mobile-first Tailwind (`sm` / `md` / `lg`). Use `.page-container`, `.scrollbar-hide`, `min-w-0` on flex children. Stack sidebars and form grids on small screens; sticky panels only at `lg:`.
+
+**Wishlist:** `WishlistButton` for toggle, `useWishlist` for data, page at `routes/_authenticated/wishlist.tsx` (guest-accessible until auth guard is added).
 
 ## Cursor
 

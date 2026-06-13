@@ -7,10 +7,12 @@ alwaysApply: false
 # Frontend
 
 - Routes: `frontend/src/routes/` — `_public/` guest, `_authenticated/` auth later
-- Hooks: `frontend/src/hooks/` — all API via TanStack Query
+- Hooks: `frontend/src/hooks/` — all API via TanStack Query (`useCart`, `useWishlist`, …)
 - No fetch/axios in components
-- Zustand: cart drawer UI only; server data in Query
+- Zustand: cart drawer UI + wishlist badge count; server data in Query
 - shadcn + Tailwind; Amazon tokens in `index.css` / `tailwind.config.ts`
 - Search typeahead: `useSearchSuggestions` (debounced, not Query)
+- Responsive: mobile-first breakpoints; `MobileMenu` for nav on `<md`; stack layouts until `lg:`
+- Wishlist: `WishlistButton`, `WishlistItem`, page at `_authenticated/wishlist.tsx`
 
 New feature: types → hook → component → route

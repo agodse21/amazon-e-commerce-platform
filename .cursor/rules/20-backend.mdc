@@ -11,8 +11,8 @@ routes → controllers → services → Prisma
 ```
 
 - Zod on routes, `sendSuccess`/`sendNotFound` in controllers
-- Prisma only in services; orders use `$transaction`
-- `app.ts` exports app (no listen); `server.ts` local dev; `api/index.ts` Vercel
+- Prisma only in services; orders use `$transaction` (stock + order + cart clear)
+- `app.ts` exports `createApp()`; `server.ts` local dev; `api/index.ts` → `backend/dist` on Vercel
 - `loadEnv.ts` first in `app.ts`; CORS from `ALLOWED_ORIGINS`
 
 New API: service → controller → route → `app.ts` → `docs/API.md`

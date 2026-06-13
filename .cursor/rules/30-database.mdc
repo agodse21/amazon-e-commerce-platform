@@ -13,3 +13,5 @@ alwaysApply: false
 - Cursor pagination: `take: limit + 1`, return `nextCursor` + `hasNextPage`
 
 Prisma only in services. Update `docs/API.md` / types if models change.
+
+`wishlists` table uses `session_id` (required) + optional `user_id` for future auth.

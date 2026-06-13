@@ -43,10 +43,12 @@ Session cookie required (same as cart).
 
 | Method | Path | Body |
 |--------|------|------|
-| GET | `/wishlist` | — |
+| GET | `/wishlist` | — → `{ items: WishlistItem[] }` |
 | POST | `/wishlist/items` | `{ productId }` |
 | DELETE | `/wishlist/items/:itemId` | — |
 | DELETE | `/wishlist/products/:productId` | — |
+
+Each item includes nested `product` (summary + primary image).
 
 ## Orders
 

@@ -12,6 +12,8 @@ Full-stack Amazon-inspired e-commerce app. Browse products, manage a cart, check
 - Checkout with address form and order summary
 - Buy Now — checkout one item without touching saved cart
 - Order confirmation and order history
+- **Wishlist** — save products via heart button; session-based list at `/wishlist`
+- **Responsive layout** — mobile, tablet, and desktop (mobile menu, stacked cart/checkout, adaptive product grid)
 - Amazon-style UI — navy header, product cards, yellow Add to Cart
 
 ## Tech Stack
@@ -49,7 +51,7 @@ Frontend and backend never import each other — communication is only through `
 **Backend:** `routes → controllers → services → Prisma`  
 **Frontend:** `route → hook (Query) → component` — Zustand for cart drawer UI only
 
-Session cart uses an `amazon_session_id` cookie. No login required for MVP.
+Session cart and wishlist use an `amazon_session_id` cookie. No login required for MVP.
 
 More detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 
