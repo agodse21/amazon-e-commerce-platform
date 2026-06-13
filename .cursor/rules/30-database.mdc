@@ -7,6 +7,7 @@ alwaysApply: false
 # Database
 
 - Schema: `backend/prisma/schema.prisma`
+- Design doc: `docs/DATABASE.md`
 - Seed: DummyJSON → `cdn.dummyjson.com` images, no hand-made URLs
 - Commands: `pnpm run prisma:migrate`, `pnpm run prisma:seed`
 - Root `.env` for `DATABASE_URL`

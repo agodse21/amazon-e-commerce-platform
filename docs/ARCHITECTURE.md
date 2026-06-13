@@ -74,6 +74,8 @@ Schema in `backend/prisma/schema.prisma`. Seed pulls categories + products from 
 
 Main tables: `categories`, `products`, `product_images`, `carts`, `cart_items`, `orders`, `order_items`, `wishlists`. `users` reserved for future auth.
 
+Full design: [docs/DATABASE.md](DATABASE.md).
+
 ## Not built yet
 
 - Login/signup (routes stubbed under `_authenticated/`)

@@ -99,4 +99,4 @@ vercel --prod
 
 ## Docs
 
-[Architecture](docs/ARCHITECTURE.md) · [API](docs/API.md) · [Plan](docs/PLAN.md) · [Conventions](docs/CONVENTIONS.md)
+[Architecture](docs/ARCHITECTURE.md) · [Database](docs/DATABASE.md) · [API](docs/API.md) · [Plan](docs/PLAN.md) · [Conventions](docs/CONVENTIONS.md)
