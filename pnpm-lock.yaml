@@ -44,6 +44,9 @@ importers:
       jsonwebtoken:
         specifier: ^9.0.2
         version: 9.0.3
+      prisma:
+        specifier: 5.22.0
+        version: 5.22.0
       uuid:
         specifier: ^9.0.1
         version: 9.0.1
@@ -96,9 +99,6 @@ importers:
       prettier:
         specifier: ^3.8.4
         version: 3.8.4
-      prisma:
-        specifier: 5.22.0
-        version: 5.22.0
       supertest:
         specifier: ^6.3.4
         version: 6.3.4
