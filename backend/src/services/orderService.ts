@@ -126,11 +126,10 @@ export const createOrder = async (
         shippingAddress: shippingAddress as object,
         items: {
           create: items.map((item) => ({
-            productId: item.productId,
+            product: { connect: { id: item.productId } },
             productName: item.product.name,
-            productImage: undefined,
             quantity: item.quantity,
-            unitPrice: item.product.price,
+            unitPrice: Number(item.product.price),
           })),
         },
       },
