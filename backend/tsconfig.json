@@ -12,5 +12,5 @@
     "resolveJsonModule": true,
     "baseUrl": "."
   },
-  "include": ["src/**/*", "../api/**/*"]
+  "include": ["src/**/*"]
 }

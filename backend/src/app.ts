@@ -12,51 +12,56 @@ import categoryRoutes from './routes/categories.js';
 import cartRoutes from './routes/cart.js';
 import orderRoutes from './routes/orders.js';
 
-const app = express();
+export function createApp() {
+  const app = express();
 
-// Security Headers
-app.use(
-  helmet({
-    crossOriginResourcePolicy: { policy: 'cross-origin' },
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        imgSrc: ["'self'", 'data:', 'https:', 'http:'],
-        scriptSrc: ["'self'"],
-        styleSrc: ["'self'", "'unsafe-inline'"],
+  // Vercel sits behind a reverse proxy — required for rate limiting and secure cookies
+  app.set('trust proxy', 1);
+
+  // Security Headers
+  app.use(
+    helmet({
+      crossOriginResourcePolicy: { policy: 'cross-origin' },
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: ["'self'"],
+          imgSrc: ["'self'", 'data:', 'https:', 'http:'],
+          scriptSrc: ["'self'"],
+          styleSrc: ["'self'", "'unsafe-inline'"],
+        },
       },
-    },
-  })
-);
+    })
+  );
 
-app.use(corsMiddleware);
+  app.use(corsMiddleware);
 
-// Body Parsers
-app.use(express.json({ limit: '10kb' }));
-app.use(express.urlencoded({ extended: true, limit: '10kb' }));
-app.use(cookieParser());
+  // Body Parsers
+  app.use(express.json({ limit: '10kb' }));
+  app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+  app.use(cookieParser());
 
-// Session (assigns sessionId cookie to every request)
-app.use(sessionMiddleware);
+  // Session (assigns sessionId cookie to every request)
+  app.use(sessionMiddleware);
 
-// Rate Limiting
-if (process.env.NODE_ENV === 'production') {
-  app.use(apiLimiter);
+  // Rate Limiting
+  if (process.env.NODE_ENV === 'production') {
+    app.use(apiLimiter);
+  }
+
+  // Health Check
+  app.get('/api/health', (_req, res) => {
+    res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  });
+
+  // API Routes
+  app.use('/api/products', productRoutes);
+  app.use('/api/categories', categoryRoutes);
+  app.use('/api/cart', cartRoutes);
+  app.use('/api/orders', orderRoutes);
+
+  // 404 + Error Handlers
+  app.use('/api/*', notFoundHandler);
+  app.use(errorHandler);
+
+  return app;
 }
-
-// Health Check
-app.get('/api/health', (_req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
-
-// API Routes
-app.use('/api/products', productRoutes);
-app.use('/api/categories', categoryRoutes);
-app.use('/api/cart', cartRoutes);
-app.use('/api/orders', orderRoutes);
-
-// 404 + Error Handlers
-app.use('/api/*', notFoundHandler);
-app.use(errorHandler);
-
-export default app;

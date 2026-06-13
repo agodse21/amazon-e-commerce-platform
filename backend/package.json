@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/server.ts",
+    "build": "prisma generate && tsc -p tsconfig.build.json && node -e \"require('fs').writeFileSync('dist/package.json', '{\\\"type\\\":\\\"commonjs\\\"}')\"",
     "start": "node dist/server.js",
     "type-check": "prisma generate && tsc --noEmit",
     "lint": "eslint src --ext .ts --report-unused-disable-directives --max-warnings 0",
